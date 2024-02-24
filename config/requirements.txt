@@ -1,0 +1,27 @@
+# Django
+djangorestframework==3.14.0
+Django>=3.2,<4
+django-filter==22.1
+django-health-check==3.17.0
+
+# Database
+django-mysql==4.8.0
+mysqlclient==2.1.1
+opentelemetry.instrumentation.pymysql==0.40b0
+PyMySQL==1.0.2
+
+# Swagger
+drf-spectacular==0.26.2
+drf-spectacular-sidecar==2023.5.1
+
+# Redis
+django-redis==5.2.0
+redis==3.5.3
+opentelemetry-instrumentation-redis==0.40b0
+redlock-py==1.0.8
+
+requests==2.31.0
+gunicorn==20.1.0
+pre-commit==2.20.0
+coverage==7.2.1
+
