@@ -16,8 +16,9 @@ from pathlib import Path
 
 # flake8: noqa: E501
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
 
 TEST = 'test' in sys.argv
 
@@ -30,7 +31,7 @@ SECRET_KEY = "django-insecure-&_b_!a@ql$8r!amqsxmz_=ap4^t+6jqd4k2*z6c9v!*7l21w(4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -75,7 +76,7 @@ ROOT_URLCONF = 'auth-api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

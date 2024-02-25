@@ -45,7 +45,7 @@ count = true
 [tool.isort]
 profile = "black"
 # TODO: Add new local application/library package.
-known_first_party = ["connector", "api-auth"]
+known_first_party = ["connector", "uservice"]
 sections = ["FUTURE","STDLIB","THIRDPARTY","FIRSTPARTY","LOCALFOLDER"]
 line_length = 99
 combine_as_imports = true
