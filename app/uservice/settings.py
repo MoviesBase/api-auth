@@ -26,7 +26,9 @@ TEST = 'test' in sys.argv
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-&_b_!a@ql$8r!amqsxmz_=ap4^t+6jqd4k2*z6c9v!*7l21w(4"
+SECRET_KEY = (
+    'django-insecure-&_b_!a@ql$8r!amqsxmz_=ap4^t+6jqd4k2*z6c9v!*7l21w(4'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -71,7 +73,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-ROOT_URLCONF = 'auth-api.urls'
+ROOT_URLCONF = 'uservice.urls'
 
 TEMPLATES = [
     {
@@ -88,8 +90,10 @@ TEMPLATES = [
         },
     },
 ]
+# Auth User Model
+AUTH_USER_MODEL = 'connector.UserModel'
 
-WSGI_APPLICATION = "uservice.wsgi.application"
+WSGI_APPLICATION = 'uservice.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -110,25 +114,25 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -137,12 +141,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email verification
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

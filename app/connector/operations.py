@@ -26,7 +26,7 @@ class UserOperations:
         """
         try:
             serializer = self.serializer_class(
-                user_instance, data=user_data, context=context
+                user_instance, data=user_data, context=context, partial=True
             )
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -37,13 +37,13 @@ class UserOperations:
         except APIException as e:
             raise APIException(e)
 
-    def get_user_instance(self, user_id):
+    def get_user_instance(self, username):
         """
         Returns user from the database on given ID
         Parameters: user_id
         """
         try:
-            user = UserModel.objects.get(pk=user_id)
+            user = UserModel.objects.get(pk=username)
             return user
         except UserModel.DoesNotExist as e:
             raise NotFound(e)
@@ -68,8 +68,6 @@ class UserOperations:
 
 
 class EmailVerificationOperations:
-    email_host = settings.EMAIL_HOST
-
     # Generate OTP
     def generate_otp(self, length=6):
         return ''.join(random.choices(string.digits, k=length))

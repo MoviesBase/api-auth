@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -38,12 +39,6 @@ class UserLoginView(APIView):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data['user']
-        # Check if the user's email is verified
-        if not user.email_verified:
-            return Response(
-                {'error': 'Email not verified'},
-                status=status.HTTP_403_FORBIDDEN,
-            )
 
         token, created = Token.objects.get_or_create(user=user)
 
@@ -86,7 +81,7 @@ class UserViewSet(viewsets.ViewSet):
     """
 
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated, HasAccessPermissions())
+    permission_classes = (permissions.IsAuthenticated, HasAccessPermissions)
 
     serializer_class = UserSerializer
 
@@ -103,8 +98,8 @@ class UserViewSet(viewsets.ViewSet):
         """
         Updates user information
         """
-        user_id = request.user.id
-        user_instance = UserOperations().get_user_instance(user_id)
+        username = request.user.username
+        user_instance = UserOperations().get_user_instance(username)
 
         UserOperations().update_user(
             user_data=request.data,
@@ -127,14 +122,11 @@ class UserViewSet(viewsets.ViewSet):
         request=serializer_class,
     )
     def retrieve(self, request):
-        user_id = request.user.id
-        user_instance = UserOperations().get_user_instance(user_id)
-
-        serializer = self.serializer_class(data=user_instance)
-        serializer.is_valid(raise_exception=True)
+        username = request.user.username
+        user_instance = UserOperations().get_user_instance(username)
 
         return Response(
-            serializer.validated_data,
+            model_to_dict(user_instance),
             status=status.HTTP_200_OK,
         )
 
@@ -144,21 +136,20 @@ class UserViewSet(viewsets.ViewSet):
             400: OpenApiResponse(description='Invalid value'),
             403: OpenApiResponse(description='Permission Denied'),
             500: OpenApiResponse(description='Internal server error'),
-        },
-        request=serializer_class,
+        }
     )
     def delete(self, request):
         """
         Deletes User on given id
         """
-        user_id = request.user.id
+        username = request.user.username
 
-        user_instance = UserOperations().get_user_instance(user_id)
+        user_instance = UserOperations().get_user_instance(username)
 
         UserOperations().delete_user_record(user_instance)
 
         return Response(
-            {f'User on id {user_id} was successfully deleted'},
+            {f'User  {username} was successfully deleted'},
             status=status.HTTP_200_OK,
         )
 
@@ -166,7 +157,7 @@ class UserViewSet(viewsets.ViewSet):
 @extend_schema(tags=['email verification'])
 class EmailVerificationViewSet(viewsets.ViewSet):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated, HasAccessPermissions())
+    permission_classes = (permissions.IsAuthenticated, HasAccessPermissions)
 
     @extend_schema(
         responses={

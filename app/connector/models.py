@@ -12,6 +12,7 @@ class UserModel(AbstractUser):
 
     is_admin = models.BooleanField(default=False)
     username = models.CharField(
+        primary_key=True,
         max_length=50,
         unique=True,
         validators=[username_validator],

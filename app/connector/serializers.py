@@ -73,12 +73,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = [
+            'user_permissions',
+            'groups',
+            'is_admin',
+            'is_staff',
+            'is_superuser',
+            'last_login',
+            'date_joined',
+        ]
 
     def update(self, instance, validated_data):
         # Check if email is being updated
         if 'email' in validated_data:
-            # Set verified to False if email is being updated
-            validated_data['verified'] = False
+            # Set email_verified to False if email is updated
+            validated_data['email_verified'] = False
 
         return super().update(instance, validated_data)

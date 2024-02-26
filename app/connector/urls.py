@@ -15,18 +15,18 @@ urlpatterns = [
     ),
     path(
         'send-otp/',
-        views.EmailVerificationViewSet.as_view(),
+        views.EmailVerificationViewSet.as_view({'post': 'send_otp'}),
         name='api_verification',
     ),
     path(
         'verify-otp/',
-        views.EmailVerificationViewSet.as_view(),
+        views.EmailVerificationViewSet.as_view({'post': 'verify_otp'}),
         name='api_verification',
     ),
     path(
-        'user/<str:user_id>',
+        'user/',
         views.UserViewSet.as_view(
-            {'get': 'retrieve', 'delete': 'delete', 'update': 'update'}
+            {'get': 'retrieve', 'delete': 'delete', 'put': 'update'}
         ),
         name='user',
     ),
