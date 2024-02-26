@@ -73,6 +73,8 @@ REST_FRAMEWORK = {
     ],
 }
 
+REST_USE_JWT = True  # Use JWT for authentication
+
 ROOT_URLCONF = 'uservice.urls'
 
 TEMPLATES = [

@@ -11,5 +11,5 @@ ADD /config /local/config
 RUN pip install -r /local/config/requirements.txt
 
 EXPOSE 8888
-CMD bash -c "gunicorn uservice.wsgi --workers 3 --threads 100 --max-requests 1000 --max-requests-jitter 15 -b 0.0.0.0:8000"
+CMD bash -c "python /check_service.py --service-name auth-db --ip auth-db --port 3306 && python manage.py makemigrations && python manage.py migrate && gunicorn uservice.wsgi --workers 1 --threads 100 --max-requests 1000 --max-requests-jitter 15 -b 0.0.0.0:8888"
 WORKDIR /local
