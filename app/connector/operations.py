@@ -37,13 +37,13 @@ class UserOperations:
         except APIException as e:
             raise APIException(e)
 
-    def get_user_instance(self, username):
+    def get_user_instance(self, user_id):
         """
         Returns user from the database on given ID
         Parameters: user_id
         """
         try:
-            user = UserModel.objects.get(pk=username)
+            user = UserModel.objects.get(pk=user_id)
             return user
         except UserModel.DoesNotExist as e:
             raise NotFound(e)

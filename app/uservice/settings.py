@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import datetime
 import os
 import sys
+from datetime import timedelta
 from pathlib import Path
 
 # flake8: noqa: E501
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_jwt',
     'connector',
     'health_check',
     'drf_spectacular',
@@ -70,10 +72,9 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
     ],
 }
-
-REST_USE_JWT = True  # Use JWT for authentication
 
 ROOT_URLCONF = 'uservice.urls'
 
@@ -153,6 +154,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email verification
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USER_HOST = os.environ.get('EMAIL_USER_HOST')
+
+# JWT Authentication
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
+    'ALGORITHM': 'HS512',
+    'SIGNING_KEY': os.environ.get('JWT_SECRET_KEY'),
+    # Other JWT settings...
+}
+# Django REST Framework settings
+REST_USE_JWT = True  # Use JWT for authentication
 
 """
 Swagger configuration

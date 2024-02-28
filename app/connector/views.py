@@ -5,6 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import AccessToken
 
 from connector.operations import EmailVerificationOperations, UserOperations
 from connector.permissions import HasAccessPermissions
@@ -37,12 +38,16 @@ class UserLoginView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         user = serializer.validated_data['user']
-
+        access_token = AccessToken.for_user(user)
         token, created = Token.objects.get_or_create(user=user)
 
-        return Response({'token': token.key}, status=status.HTTP_200_OK)
+        # Customize token response as needed
+        response_data = {
+            'Access Token': str(access_token),
+            'User Token': str(token),
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 @extend_schema(tags=['user register'])
@@ -98,8 +103,8 @@ class UserViewSet(viewsets.ViewSet):
         """
         Updates user information
         """
-        username = request.user.username
-        user_instance = UserOperations().get_user_instance(username)
+        user_id = request.user.user_id
+        user_instance = UserOperations().get_user_instance(user_id)
 
         UserOperations().update_user(
             user_data=request.data,
@@ -122,8 +127,8 @@ class UserViewSet(viewsets.ViewSet):
         request=serializer_class,
     )
     def retrieve(self, request):
-        username = request.user.username
-        user_instance = UserOperations().get_user_instance(username)
+        user_id = request.user.id
+        user_instance = UserOperations().get_user_instance(user_id)
 
         return Response(
             model_to_dict(user_instance),
@@ -142,9 +147,9 @@ class UserViewSet(viewsets.ViewSet):
         """
         Deletes User on given id
         """
+        user_id = request.user.user_id
         username = request.user.username
-
-        user_instance = UserOperations().get_user_instance(username)
+        user_instance = UserOperations().get_user_instance(user_id)
 
         UserOperations().delete_user_record(user_instance)
 

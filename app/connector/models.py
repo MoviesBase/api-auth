@@ -4,6 +4,11 @@ from django.db import models
 
 
 class UserModel(AbstractUser):
+    id = models.AutoField(
+        primary_key=True,
+        help_text='A unique identifier for each movie',
+    )
+
     # Restrict username to alphanumeric characters, underscores or hyphens
     username_validator = RegexValidator(
         regex=r'^[a-zA-Z0-9_-]+$',
@@ -12,9 +17,8 @@ class UserModel(AbstractUser):
 
     is_admin = models.BooleanField(default=False)
     username = models.CharField(
-        primary_key=True,
-        max_length=50,
         unique=True,
+        max_length=50,
         validators=[username_validator],
         error_messages={
             'unique': 'A user with that username already exists.',
