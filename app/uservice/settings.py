@@ -189,6 +189,15 @@ if TEST:
 
     patch('connector.utils.tools.get_redis_client', mock_redlock).start()
 
+    # JWT Authentication
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
+        'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
+        'ALGORITHM': 'HS512',
+        'SIGNING_KEY': 'secret',
+        # Other JWT settings...
+    }
+
     EMAIL_USER_HOST = 'test'
 
     DATABASES = {

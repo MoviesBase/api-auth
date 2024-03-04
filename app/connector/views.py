@@ -103,7 +103,7 @@ class UserViewSet(viewsets.ViewSet):
         """
         Updates user information
         """
-        user_id = request.user.user_id
+        user_id = request.user.id
         user_instance = UserOperations().get_user_instance(user_id)
 
         UserOperations().update_user(
@@ -147,7 +147,7 @@ class UserViewSet(viewsets.ViewSet):
         """
         Deletes User on given id
         """
-        user_id = request.user.user_id
+        user_id = request.user.id
         username = request.user.username
         user_instance = UserOperations().get_user_instance(user_id)
 
